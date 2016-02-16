@@ -10,7 +10,10 @@ module DotoTime
     enable :sessions
 
     get '/' do
-      "Pass a Steam ID, like #{url('1234')}"
+      players = steam.get_player_infos
+                  .sort_by{ |p| p[:id]}
+                  .sort_by{ |p| p[:state]}
+      erb :index, locals: { players: players }
     end
 
     get %r{/(\d+)} do |id|
