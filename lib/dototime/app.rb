@@ -32,6 +32,8 @@ module DotoTime
     end
 
     post '/bot/callback' do
+      groupme.send('got callback alright')
+
       request.body.rewind
       j = JSON.parse(request.body.read)
       groupme.send(j.to_s)
