@@ -11,6 +11,9 @@ module DotoTime
 
     get '/' do
       response = groupme.send('trying root again')
+      puts '---------------------------- response, App./'
+      puts response
+      puts '----------------------------'
       if response.code == 200
         "Pass a Steam ID, like #{url('1234')}"
       else
