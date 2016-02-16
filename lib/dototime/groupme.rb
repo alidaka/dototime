@@ -25,6 +25,7 @@ module DotoTime
       p '-------------------------- callback(data)'
       p data.to_s
       p '--------------------------'
+      $stdout.flush
       case data['text'].strip
       when '!starcraft' then
         send 'power overwhelming'
