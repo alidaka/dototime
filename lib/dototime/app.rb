@@ -31,6 +31,11 @@ module DotoTime
       body response.message
     end
 
+    post '/bot/callback' do
+      request.body.rewind
+      groupme.callback(JSON.parse(request.body.read))
+    end
+
     #get '/auth' do
       #redirect SteamAuth::authenticate(session, url('/'), url('/auth_reception'))
     #end

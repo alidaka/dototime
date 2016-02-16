@@ -20,5 +20,15 @@ module DotoTime
       http.use_ssl = true
       http.request(request)
     end
+
+    def callback(data)
+      case data['text'].strip
+      when '!starcraft' then
+        send 'power overwhelming'
+      when /^!echo (.*)/ then
+        send "#{$1}"
+      else
+      end
+    end
   end
 end
