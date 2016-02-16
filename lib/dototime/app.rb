@@ -3,6 +3,7 @@ require 'tilt/erb'
 
 require_relative 'steam'
 require_relative 'steam_auth'
+require_relative 'groupme'
 
 module DotoTime
   class App < Sinatra::Base
@@ -24,6 +25,12 @@ module DotoTime
       erb :index, locals: { players: players }
     end
 
+    get '/bot/:message' do
+      response = groupme.send(params[:message])
+      status response.code
+      body response.message
+    end
+
     #get '/auth' do
       #redirect SteamAuth::authenticate(session, url('/'), url('/auth_reception'))
     #end
@@ -39,6 +46,14 @@ module DotoTime
       end
 
       @steam
+    end
+
+    def groupme
+      unless @groupme
+        @groupme = GroupMe.new(host: ENV['GROUPME_ENDPOINT'], bot_id: ENV['GROUPME_BOT_ID'])
+      end
+
+      @groupme
     end
 
     run! if app_file == $0
