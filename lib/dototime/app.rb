@@ -10,8 +10,13 @@ module DotoTime
     enable :sessions
 
     get '/' do
-      groupme.send('trying root again')
-      "Pass a Steam ID, like #{url('1234')}"
+      response = groupme.send('trying root again')
+      if response.code == 200
+        "Pass a Steam ID, like #{url('1234')}"
+      else
+        status response.code
+        body response.message
+      end
     end
 
     get %r{/(\d+)} do |id|
