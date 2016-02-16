@@ -26,6 +26,8 @@ module DotoTime
 
     def callback(data, steam)
       case data['text'].strip.downcase
+      when '!help' then
+        send help_message
       when '!starcraft' then
         send Starcraft.get_cheat
       when '!roll' then
@@ -35,9 +37,19 @@ module DotoTime
       when '!flip' then
         send flip
       when '!ping' then
-        send generate_player_statuses(steam)
+        send player_statuses(steam)
       else
       end
+    end
+
+    private
+    def help_message
+      %q(!help
+!ping
+!roll
+!roll #
+!flip
+!starcraft)
     end
 
     def aggregate_statuses(players)
@@ -46,7 +58,7 @@ module DotoTime
         monitored: players.size }
     end
 
-    def generate_player_statuses(steam)
+    def player_statuses(steam)
       statuses = aggregate_statuses(steam.get_player_infos)
       "#{statuses[:dota]} players in Dota 2\n#{statuses[:online]} players online-ish\n#{statuses[:monitored]} players pinged"
     end
