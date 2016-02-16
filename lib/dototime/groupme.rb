@@ -27,8 +27,23 @@ module DotoTime
         send 'power overwhelming'
       when /^!echo (.*)/ then
         send "#{$1}"
+      when '!roll' then
+        send r(100)
+      when /^!roll (\d+)/ then
+        send r($1)
+      when '!flip' then
+        send (r(2) == 2)
+      when '!ping' then
       else
       end
+    end
+
+    def r(max)
+      unless max.integer? && max > 0
+        raise ArgumentError("expected positive integer; got #{max}")
+      end
+
+      rand(1..max)
     end
   end
 end
