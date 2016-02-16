@@ -7,9 +7,10 @@ module DotoTime
   class Steam
     @@game_names = nil
 
-    def initialize(host:, api_key:)
+    def initialize(host:, api_key:, ids:)
       @host = host
       @api_key = api_key
+      @ids = ids
 
       initialize_game_names
     end
@@ -18,7 +19,7 @@ module DotoTime
       get_player_infos([player_id])
     end
 
-    def get_player_infos(player_ids)
+    def get_player_infos(player_ids = @ids)
       path = '/ISteamUser/GetPlayerSummaries/v0002/'
       ids = player_ids.inject {|memo, id| memo + ',' + id}
       params = { steamids: ids }
@@ -53,11 +54,14 @@ module DotoTime
 
     def extract_player(player_json)
       game_id = player_json['gameid'].to_i
+      game_name = @@game_names[game_id]
+
       { id: player_json['steamid'],
         name: player_json['personaname'],
         state: PersonaState.from_i(player_json['personastate']),
         game_id: game_id,
-        game_name: @@game_names[game_id] }
+        game_name: game_name,
+        in_dota: game_name && game_name.downcase.include?('dota 2') }
     end
 
     def get(path, params = {})

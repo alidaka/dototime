@@ -33,9 +33,15 @@ module DotoTime
 
     post '/bot/callback' do
       request.body.rewind
-      response = groupme.callback(JSON.parse(request.body.read))
-      status response.code
-      body response.message
+      response = groupme.callback(JSON.parse(request.body.read), steam)
+      if response
+        status response.code
+        body response.message
+      else
+        status 500
+        body 'unknown failure'
+      end
+
     end
 
     #get '/auth' do
@@ -49,7 +55,8 @@ module DotoTime
     private
     def steam
       unless @steam
-        @steam = Steam.new(host: ENV['STEAM_ENDPOINT'], api_key: ENV['STEAM_KEY'])
+        ids = ENV['STEAM_IDS'].split(',')
+        @steam = Steam.new(host: ENV['STEAM_ENDPOINT'], api_key: ENV['STEAM_KEY'], ids: ids)
       end
 
       @steam

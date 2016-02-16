@@ -1,6 +1,9 @@
 require 'net/http'
 require 'json'
 
+require_relative 'starcraft'
+require_relative 'steam'
+
 module DotoTime
   class GroupMe
     def initialize(host:, bot_id:)
@@ -21,21 +24,31 @@ module DotoTime
       http.request(request)
     end
 
-    def callback(data)
-      case data['text'].strip
+    def callback(data, steam)
+      case data['text'].strip.downcase
       when '!starcraft' then
-        send 'power overwhelming'
-      when /^!echo (.*)/ then
-        send "#{$1}"
+        send Starcraft.get_cheat
       when '!roll' then
         send r(100)
       when /^!roll (\d+)/ then
-        send r($1)
+        send r($1.to_i)
       when '!flip' then
-        send (r(2) == 2)
+        send flip
       when '!ping' then
+        send generate_player_statuses(steam)
       else
       end
+    end
+
+    def aggregate_statuses(players)
+      { dota: players.count{ |p| p[:in_dota] },
+        online: players.count{ |p| p[:state] != :offline },
+        monitored: players.size }
+    end
+
+    def generate_player_statuses(steam)
+      statuses = aggregate_statuses(steam.get_player_infos)
+      "#{statuses[:dota]} players in Dota 2\n#{statuses[:online]} players online-ish\n#{statuses[:monitored]} players pinged"
     end
 
     def r(max)
@@ -43,7 +56,11 @@ module DotoTime
         raise ArgumentError("expected positive integer; got #{max}")
       end
 
-      rand(1..max)
+      rand(1..max).to_s
+    end
+
+    def flip
+      r(2) == '2' ? 'heads' : 'tails'
     end
   end
 end
