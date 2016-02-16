@@ -10,7 +10,6 @@ module DotoTime
     enable :sessions
 
     get '/' do
-      groupme.send('anything')
       "Pass a Steam ID, like #{url('1234')}"
     end
 
@@ -33,6 +32,10 @@ module DotoTime
     end
 
     post '/bot/callback' do
+      request.body.rewind
+      j = JSON.parse(request.body.read)
+      groupme.send(j.to_s)
+
       request.body.rewind
       groupme.callback(JSON.parse(request.body.read))
     end

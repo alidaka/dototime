@@ -22,7 +22,6 @@ module DotoTime
     end
 
     def callback(data)
-      send data.to_s
       case data['text'].strip
       when '!starcraft' then
         send 'power overwhelming'
