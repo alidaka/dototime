@@ -10,16 +10,7 @@ module DotoTime
     enable :sessions
 
     get '/' do
-      response = groupme.send('trying root again')
-      puts '---------------------------- response, App./'
-      puts response
-      puts '----------------------------'
-      if response.code == 200
-        "Pass a Steam ID, like #{url('1234')}"
-      else
-        status response.code
-        body response.message
-      end
+      "Pass a Steam ID, like #{url('1234')}"
     end
 
     get %r{/(\d+)} do |id|
@@ -41,14 +32,10 @@ module DotoTime
     end
 
     post '/bot/callback' do
-      groupme.send('got callback alright')
-
       request.body.rewind
-      j = JSON.parse(request.body.read)
-      groupme.send(j.to_s)
-
-      request.body.rewind
-      groupme.callback(JSON.parse(request.body.read))
+      response = groupme.callback(JSON.parse(request.body.read))
+      status response.code
+      body response.message
     end
 
     #get '/auth' do

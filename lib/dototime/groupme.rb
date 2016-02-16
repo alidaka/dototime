@@ -16,13 +16,6 @@ module DotoTime
       )
       request.body = { "bot_id" => @bot_id, "text" => message }.to_json
 
-      puts '---------------------------- uri, GroupMe.send'
-      puts uri
-      puts '----------------------------'
-      puts '---------------------------- request, GroupMe.send'
-      puts request
-      puts '----------------------------'
-
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.request(request)
