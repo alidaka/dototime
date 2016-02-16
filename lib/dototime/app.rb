@@ -25,6 +25,10 @@ module DotoTime
       erb :index, locals: { players: players }
     end
 
+    get '/bot/avatar' do
+      send_file File.join(settings.public_folder, 'rattletrap.jpg')
+    end
+
     get '/bot/:message' do
       response = groupme.send(params[:message])
       status response.code
@@ -41,7 +45,6 @@ module DotoTime
         status 500
         body 'unknown failure'
       end
-
     end
 
     #get '/auth' do
