@@ -10,9 +10,7 @@ module DotoTime
     enable :sessions
 
     get '/' do
-      players = steam.get_player_infos
-                  .sort_by{ |p| p[:id]}
-                  .sort_by{ |p| p[:state]}
+      players = sort_players(steam.get_default_player_infos)
       erb :index, locals: { players: players }
     end
 
@@ -21,10 +19,7 @@ module DotoTime
         memo << friend[:id]
       end
 
-      players = steam.get_player_infos(friend_ids)
-                  .sort_by{ |p| p[:id]}
-                  .sort_by{ |p| p[:state]}
-
+      players = sort_players(ids_to_players(friend_ids))
       erb :index, locals: { players: players }
     end
 
@@ -74,6 +69,14 @@ module DotoTime
       end
 
       @groupme
+    end
+
+    def ids_to_players(ids)
+      ids.empty? ? [] : players = steam.get_player_infos(ids)
+    end
+
+    def sort_players(players)
+      players.sort_by{ |p| p[:id]}.sort_by{ |p| p[:state]}
     end
 
     run! if app_file == $0

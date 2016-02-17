@@ -19,7 +19,11 @@ module DotoTime
       get_player_infos([player_id])
     end
 
-    def get_player_infos(player_ids = @ids)
+    def get_default_player_infos
+      get_player_infos(@ids)
+    end
+
+    def get_player_infos(player_ids)
       path = '/ISteamUser/GetPlayerSummaries/v0002/'
       ids = player_ids.inject {|memo, id| memo + ',' + id}
       params = { steamids: ids }
@@ -33,7 +37,8 @@ module DotoTime
       params = { steamid: player_id }
 
       result = get_json(path, params)
-      extract_players(result['friendslist']['friends'])
+      friendslist = result['friendslist']
+      friendslist ? extract_players(friendslist['friends']) : []
     end
 
     private
