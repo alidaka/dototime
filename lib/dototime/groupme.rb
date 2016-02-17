@@ -33,7 +33,8 @@ module DotoTime
       when '!roll' then
         send r(100)
       when /^!roll (\d+)/ then
-        send r($1.to_i)
+        max = $1.to_i
+        send(r(max) + (max == 2 ? ' (have you tried "!flip"?)' : ''))
       when '!flip' then
         send flip
       when '!ping' then
