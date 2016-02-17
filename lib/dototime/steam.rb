@@ -78,7 +78,11 @@ module DotoTime
     end
 
     def get_json(path, params = {})
-      JSON.parse(get(path, params))
+      begin
+        JSON.parse(get(path, params))
+      rescue JSON::ParserError
+        {}
+      end
     end
   end
 end
