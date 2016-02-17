@@ -13,5 +13,18 @@ module DotoTime
       else raise ArgumentError.new("Invalid PersonaState value '#{i}'")
       end
     end
+
+    def self.state_to_online_precedence(state)
+      case state
+      when :online           then 0
+      when :looking_to_play  then 1
+      when :looking_to_trade then 2
+      when :busy             then 3
+      when :snooze           then 4
+      when :away             then 5
+      when :offline          then 6
+      else 7
+      end
+    end
   end
 end

@@ -76,7 +76,11 @@ module DotoTime
     end
 
     def sort_players(players)
-      players.sort_by{ |p| p[:id]}.sort_by{ |p| p[:state]}
+      players.sort_by{ |p| p[:id]}.sort_by{ |p| state_sort_value(p) }
+    end
+
+    def state_sort_value(player)
+      player[:in_dota] ? -1 : PersonaState::state_to_online_precedence(player[:state])
     end
 
     run! if app_file == $0

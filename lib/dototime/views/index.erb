@@ -1,7 +1,7 @@
 <h1>Doto Time?</h1>
 <div class="row">
-  <p>Currently <%= players.count{|p| p[:state] != :offline } %> users online-ish</p>
   <p>Currently <%= players.count{|p| p[:game_name] } %> users in game</p>
+  <p>Currently <%= players.count{|p| p[:state] != :offline } %> users online-ish</p>
   <table class="table table-hover">
     <tr>
       <th>ID</th>
