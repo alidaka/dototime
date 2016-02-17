@@ -14,7 +14,7 @@
     <tr>
       <td><%= player[:id] %></td>
       <td><%= player[:name] %></td>
-      <td><%= player[:state] %></td>
+      <td class="state state-<%= player[:state] %>"><%= player[:state] %></td>
       <td><%= player[:game_id] %></td>
       <td><%= player[:game_name] %></td>
     </tr>

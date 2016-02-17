@@ -1,0 +1,11 @@
+td.state {
+  color: blue;
+}
+
+td.state-online {
+  color: green;
+}
+
+td.state-offline {
+  color: grey;
+}
