@@ -4,6 +4,7 @@ require 'tilt/erb'
 require_relative 'steam'
 require_relative 'steam_auth'
 require_relative 'groupme'
+require_relative 'presenter'
 
 module DotoTime
   class App < Sinatra::Base
@@ -11,7 +12,7 @@ module DotoTime
 
     get '/' do
       players = sort_players(steam.get_default_player_infos)
-      erb :index, locals: { players: players }
+      erb :index, locals: { players: players, game_time_string: Presenter::game_time_answer(players) }
     end
 
     get %r{/(\d+)} do |id|
@@ -20,7 +21,7 @@ module DotoTime
       end
 
       players = sort_players(ids_to_players(friend_ids))
-      erb :index, locals: { players: players }
+      erb :index, locals: { players: players, game_time_string: Presenter::game_time_answer(players) }
     end
 
     get '/bot/avatar' do

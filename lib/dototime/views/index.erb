@@ -1,4 +1,4 @@
-<h1>Doto Time?</h1>
+<h1>Doto Time? <%= game_time_string %></h1>
 <div class="row">
   <p>Currently <%= players.count{|p| p[:game_name] } %> users in game</p>
   <p>Currently <%= players.count{|p| p[:state] != :offline } %> users online-ish</p>

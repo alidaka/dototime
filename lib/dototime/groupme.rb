@@ -3,6 +3,7 @@ require 'json'
 
 require_relative 'starcraft'
 require_relative 'steam'
+require_relative 'presenter'
 
 module DotoTime
   class GroupMe
@@ -60,8 +61,13 @@ module DotoTime
     end
 
     def player_statuses(steam)
-      statuses = aggregate_statuses(steam.get_player_infos)
-      "#{statuses[:dota]} players in Dota 2\n#{statuses[:online]} players online-ish\n#{statuses[:monitored]} players pinged"
+      players = steam.get_default_player_infos
+      statuses = aggregate_statuses(players)
+      message =  "#{statuses[:dota]} players in Dota 2\n"
+      message << "#{statuses[:online]} players online-ish\n"
+      message << "#{statuses[:monitored]} players pinged\n"
+      message << "#{Presenter::game_time_quip(players)}"
+      message
     end
 
     def r(max)
