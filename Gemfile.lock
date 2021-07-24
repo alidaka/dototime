@@ -38,5 +38,8 @@ DEPENDENCIES
   ruby-openid
   sinatra
 
+RUBY VERSION
+   ruby 2.7.4p191
+
 BUNDLED WITH
-   1.10.6
+   2.2.24
