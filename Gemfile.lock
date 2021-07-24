@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     coderay (1.1.0)
-    ffi (1.9.10)
+    ffi (1.15.3)
     listen (3.0.6)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9.7)
